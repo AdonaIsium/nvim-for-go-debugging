@@ -1,0 +1,74 @@
+Keybindings Cheat Sheet
+------------------------
+
+🧭 Resize Splits:
+<leader>rh - Resize left
+<leader>rl - Resize right
+<leader>rj - Resize down
+<leader>rk - Resize up
+<leader>r= - Equalize splits
+
+🐞 DAP (Debugging):
+<leader>dt - Toggle breakpoint
+<leader>dT - Conditional breakpoint
+<leader>dc - Continue
+<leader>do - Step over
+<leader>di - Step into
+<leader>dO - Step out
+<leader>dgt - Debug Go test
+<leader>dgl - Debug Go last
+<leader>lp - Set log point
+<leader>dr - Run last debug
+<leader>dq - Quit debug + close UI
+<leader>dus - Toggle DAP sidebar
+<leader>du - Toggle DAP UI
+<leader>de - Evaluate under cursor
+
+🧠 LSP:
+K - Hover docs
+<leader>sh - Signature help
+gd - Go to definition
+gD - Go to declaration
+gi - Go to implementation
+gr - Go to references
+<leader>rn - Rename symbol
+<leader>ca - Code action
+<leader>D - Type definition
+[d / ]d - Prev/next diagnostic
+<leader>e - Line diagnostics
+<leader>q - Diagnostic list
+<C-s> - Format & save (normal)
+<C-s> - Esc + Format & save (insert)
+<C-f> - Format (stylua)
+
+🔮 Completions (nvim-cmp):
+<C-Space> - Trigger completion
+<C-e> - Abort completion
+<CR> - Confirm
+<Tab>/<S-Tab> - Navigate items
+
+🐟 Harpoon:
+<leader>ha - Add file to Harpoon
+<leader>hl - Toggle Harpoon menu
+<leader>h1-h4 - Go to file 1-4
+
+🔭 Telescope (default):
+<leader>ff - Find files
+<leader>fg - Live grep
+<leader>fb - List buffers
+<leader>fh - Help tags
+
+🗃 Neo-tree (default):
+a - Add file/directory
+d - Delete
+r - Rename
+c - Copy
+m - Move
+x - Cut
+p - Paste
+s/S - Open in split
+t - Open in new tab
+R - Refresh
+q - Close Neo-tree
+z - Toggle hidden
+? - Help popup

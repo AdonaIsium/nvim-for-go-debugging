@@ -8,7 +8,7 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				automatic_installation = true, -- this enables "install on use"
+				automatic_installation = true,
 			})
 		end,
 	},
@@ -19,25 +19,47 @@ return {
 			local lspconfig = require("lspconfig")
 
 			local on_attach = function(client, bufnr)
-				if client.name == "null-ls" then
+				-- Auto format + organize imports for Go
+				if vim.bo[bufnr].filetype == "go" then
 					vim.api.nvim_create_autocmd("BufWritePre", {
-						group = vim.api.nvim_create_augroup("LspFormatOnSave", { clear = true }),
+						buffer = bufnr,
+						callback = function()
+							-- Organize imports via gopls code actions
+							local params = vim.lsp.util.make_range_params()
+							params.context = { only = { "source.organizeImports" } }
+							local result = vim.lsp.buf_request_sync(bufnr, "textDocument/codeAction", params, 1000)
+							for _, res in pairs(result or {}) do
+								for _, action in pairs(res.result or {}) do
+									if action.edit then
+										vim.lsp.util.apply_workspace_edit(action.edit, "utf-8")
+									elseif type(action.command) == "table" then
+										vim.lsp.buf.execute_command(action.command)
+									end
+								end
+							end
+
+							-- Format the Go file
+							vim.lsp.buf.format({ async = false })
+						end,
+					})
+				elseif client.name == "null-ls" then
+					-- Format other files on save using null-ls
+					vim.api.nvim_create_autocmd("BufWritePre", {
 						buffer = bufnr,
 						callback = function()
 							vim.lsp.buf.format({
 								async = false,
-								filter = function(client)
-									return client.name == "null-ls"
+								filter = function(c)
+									return c.name == "null-ls"
 								end,
 							})
 						end,
 					})
 				end
 
+				-- Keybindings
 				local nmap = function(keys, func, desc)
-					if desc then
-						desc = "LSP: " .. desc
-					end
+					if desc then desc = "LSP: " .. desc end
 					vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
 				end
 
@@ -58,8 +80,8 @@ return {
 				vim.keymap.set("n", "<C-s>", function()
 					vim.lsp.buf.format({
 						async = false,
-						filter = function(client)
-							return client.name == "null-ls"
+						filter = function(c)
+							return c.name == "null-ls"
 						end,
 					})
 					vim.cmd("w")
@@ -70,8 +92,8 @@ return {
 				vim.keymap.set("n", "<C-f>", function()
 					vim.lsp.buf.format({
 						async = true,
-						filter = function(client)
-							return client.name == "null-ls"
+						filter = function(c)
+							return c.name == "null-ls"
 						end,
 					})
 				end, { buffer = bufnr, desc = "Format File (stylua)" })
@@ -79,16 +101,31 @@ return {
 
 			require("mason-lspconfig").setup_handlers({
 				function(server_name)
-					lspconfig[server_name].setup({
+					local opts = {
 						on_attach = on_attach,
 						capabilities = capabilities,
-					})
+					}
+
+					-- gopls specific config
+					if server_name == "gopls" then
+						opts.settings = {
+							gopls = {
+								analyses = {
+									unusedparams = true,
+									unusedwrite = true,
+								},
+								staticcheck = true,
+							},
+						}
+					end
+
+					lspconfig[server_name].setup(opts)
 				end,
 			})
 		end,
 	},
 
-	-- Add none-ls for stylua formatting
+	-- null-ls setup for formatting
 	{
 		"nvimtools/none-ls.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
@@ -102,3 +139,4 @@ return {
 		end,
 	},
 }
+
