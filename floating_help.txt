@@ -1,31 +1,8 @@
 Keybindings Cheat Sheet
 ------------------------
 
-🧭 Resize Splits:
-<leader>rh - Resize left
-<leader>rl - Resize right
-<leader>rj - Resize down
-<leader>rk - Resize up
-<leader>r= - Equalize splits
-
-🐞 DAP (Debugging):
-<leader>dt - Toggle breakpoint
-<leader>dT - Conditional breakpoint
-<leader>dc - Continue
-<leader>do - Step over
-<leader>di - Step into
-<leader>dO - Step out
-<leader>dgt - Debug Go test
-<leader>dgl - Debug Go last
-<leader>lp - Set log point
-<leader>dr - Run last debug
-<leader>dq - Quit debug + close UI
-<leader>dus - Toggle DAP sidebar
-<leader>du - Toggle DAP UI
-<leader>de - Evaluate under cursor
-
 🧠 LSP:
-K - Hover docs
+K - Hover documentation
 <leader>sh - Signature help
 gd - Go to definition
 gD - Go to declaration
@@ -34,31 +11,48 @@ gr - Go to references
 <leader>rn - Rename symbol
 <leader>ca - Code action
 <leader>D - Type definition
-[d / ]d - Prev/next diagnostic
+[d / ]d - Prev/Next diagnostic
 <leader>e - Line diagnostics
 <leader>q - Diagnostic list
-<C-s> - Format & save (normal)
-<C-s> - Esc + Format & save (insert)
-<C-f> - Format (stylua)
+<C-s> (normal) - Format and Save
+<C-s> (insert) - Esc then Format and Save
+<C-f> - Format file (stylua)
+
+🐞 Debugging (DAP):
+<leader>dt - Toggle breakpoint
+<leader>dT - Conditional breakpoint
+<leader>dc / F3 - Continue
+<leader>do / F4 - Step over
+<leader>di / F5 - Step into
+<leader>dO / F6 - Step out
+<leader>dgt - Debug Go test
+<leader>dgl - Debug Go last test
+<leader>lp - Set log point
+<leader>dr - Run last debug
+<leader>dq - Terminate session and close UI
+<leader>dus - Toggle scopes sidebar
+<leader>du - Toggle DAP UI
+<leader>de - Evaluate expression under cursor
 
 🔮 Completions (nvim-cmp):
 <C-Space> - Trigger completion
 <C-e> - Abort completion
-<CR> - Confirm
+<CR> - Confirm selection
 <Tab>/<S-Tab> - Navigate items
 
 🐟 Harpoon:
-<leader>ha - Add file to Harpoon
-<leader>hl - Toggle Harpoon menu
-<leader>h1-h4 - Go to file 1-4
+<leader>a - Add file to Harpoon
+<leader>h - Toggle Harpoon menu
+<leader>1-4 - Navigate to Harpoon file 1-4
 
-🔭 Telescope (default):
-<leader>ff - Find files
+🔭 Telescope:
+<leader>ff / <C-p> - Find files
 <leader>fg - Live grep
 <leader>fb - List buffers
 <leader>fh - Help tags
 
-🗃 Neo-tree (default):
+🗃 Neo-tree:
+<leader>e / <C-n> - Toggle Neo-tree
 a - Add file/directory
 d - Delete
 r - Rename
@@ -66,9 +60,22 @@ c - Copy
 m - Move
 x - Cut
 p - Paste
-s/S - Open in split
+s / S - Open in split
 t - Open in new tab
 R - Refresh
 q - Close Neo-tree
-z - Toggle hidden
+z - Toggle hidden files
 ? - Help popup
+
+🖥 Terminal (ToggleTerm):
+<C-t> - Toggle terminal
+
+💬 Comments:
+<C-_> - Toggle comment (normal mode)
+
+🧭 Resize Splits:
+<leader>rh - Resize split left
+<leader>rl - Resize split right
+<leader>rj - Resize split down
+<leader>rk - Resize split up
+<leader>r= - Reset all split sizes
