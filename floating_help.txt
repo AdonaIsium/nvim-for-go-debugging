@@ -1,5 +1,30 @@
-Keybindings Cheat Sheet
-------------------------
+Plugin Keybindings
+==================
+🖥 Terminal (ToggleTerm):
+<C-t> - Toggle terminal
+
+💬 Comments:
+<C-/> - Toggle comment (normal mode)
+gc - Comment linewise (visual mode)
+gb - Comment blockwise (visual mode)
+
+🐟 Harpoon:
+<leader>a - Add file to Harpoon
+<leader>h - Toggle Harpoon menu
+<leader>1-4 - Navigate to Harpoon file 1-4
+
+🔭 Telescope:
+<leader>ff / <C-p> - Find files
+<leader>fg - Live grep
+<leader>fb - List buffers
+<leader>fh - Help tags
+
+🧭 Resize Splits:
+<leader>rh - Resize split left
+<leader>rl - Resize split right
+<leader>rj - Resize split down
+<leader>rk - Resize split up
+<leader>r= - Reset all split sizes
 
 🧠 LSP:
 K - Hover documentation
@@ -34,23 +59,6 @@ gr - Go to references
 <leader>du - Toggle DAP UI
 <leader>de - Evaluate expression under cursor
 
-🔮 Completions (nvim-cmp):
-<C-Space> - Trigger completion
-<C-e> - Abort completion
-<CR> - Confirm selection
-<Tab>/<S-Tab> - Navigate items
-
-🐟 Harpoon:
-<leader>a - Add file to Harpoon
-<leader>h - Toggle Harpoon menu
-<leader>1-4 - Navigate to Harpoon file 1-4
-
-🔭 Telescope:
-<leader>ff / <C-p> - Find files
-<leader>fg - Live grep
-<leader>fb - List buffers
-<leader>fh - Help tags
-
 🗃 Neo-tree:
 <leader>e / <C-n> - Toggle Neo-tree
 a - Add file/directory
@@ -67,15 +75,8 @@ q - Close Neo-tree
 z - Toggle hidden files
 ? - Help popup
 
-🖥 Terminal (ToggleTerm):
-<C-t> - Toggle terminal
-
-💬 Comments:
-<C-_> - Toggle comment (normal mode)
-
-🧭 Resize Splits:
-<leader>rh - Resize split left
-<leader>rl - Resize split right
-<leader>rj - Resize split down
-<leader>rk - Resize split up
-<leader>r= - Reset all split sizes
+🔮 Completions (nvim-cmp):
+<C-Space> - Trigger completion
+<C-e> - Abort completion
+<CR> - Confirm selection
+<Tab>/<S-Tab> - Navigate items

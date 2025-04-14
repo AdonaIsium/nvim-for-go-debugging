@@ -1,11 +1,44 @@
 Neovim Motions and Core Keybindings
 ===================================
+🪟 Window Management:
+:sp - Horizontal split
+:vsp - Vertical split
+<C-w>s - Horizontal split
+<C-w>v - Vertical split
+<C-w>q - Close split
+<C-w>o - Close all other splits
+<C-w>h/j/k/l - Move to split left/down/up/right
+<C-w>= - Equalize split sizes
+<C-w>+/- - Increase/decrease split height
+<C-w>< / > - Increase/decrease split width
+
+✂️ Text Objects and Advanced Editing:
+vaf - Select around function
+vif - Select inner function
+vac - Select around class
+vic - Select inner class
+vaa - Select around parameter
+via - Select inner parameter
+]f - Jump to next function
+[f - Jump to previous function
+]c - Jump to next class
+[c - Jump to previous class
+]a - Jump to next parameter
+[a - Jump to previous parameter
+<leader>na - Swap with next parameter
+<leader>pa - Swap with previous parameter
+ciw - Change inner word
+caw - Change around word
+ci( / ci) / ci[ / ci] / ci{ / ci} - Change inside brackets
+ca( / ca) / ca[ / ca] / ca{ / ca} - Change around brackets
+viw - Select inner word
+vaw - Select around word
+diw - Delete inner word
+daw - Delete around word
+yiw - Yank inner word
+yaw - Yank around word
 
 🌀 Motions:
-h - Move left
-l - Move right
-j - Move down
-k - Move up
 w - Next word
 W - Next WORD
 b - Previous word
@@ -58,40 +91,3 @@ ZQ - Quit without saving
 Ctrl-o - Go to older cursor position
 Ctrl-i - Go to newer cursor position
 
-🪟 Window Management:
-:sp - Horizontal split
-:vsp - Vertical split
-<C-w>s - Horizontal split
-<C-w>v - Vertical split
-<C-w>q - Close split
-<C-w>o - Close all other splits
-<C-w>h/j/k/l - Move to split left/down/up/right
-<C-w>= - Equalize split sizes
-<C-w>+/- - Increase/decrease split height
-<C-w>< / > - Increase/decrease split width
-
-✂️ Text Objects and Advanced Editing:
-vaf - Select around function
-vif - Select inner function
-vac - Select around class
-vic - Select inner class
-vaa - Select around parameter
-via - Select inner parameter
-]f - Jump to next function
-[f - Jump to previous function
-]c - Jump to next class
-[c - Jump to previous class
-]a - Jump to next parameter
-[a - Jump to previous parameter
-<leader>na - Swap with next parameter
-<leader>pa - Swap with previous parameter
-ciw - Change inner word
-caw - Change around word
-ci( / ci) / ci[ / ci] / ci{ / ci} - Change inside brackets
-ca( / ca) / ca[ / ca] / ca{ / ca} - Change around brackets
-viw - Select inner word
-vaw - Select around word
-diw - Delete inner word
-daw - Delete around word
-yiw - Yank inner word
-yaw - Yank around word
