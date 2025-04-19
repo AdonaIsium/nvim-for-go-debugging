@@ -11,11 +11,12 @@ return {
 		"rafamadriz/friendly-snippets",
 	},
 	config = function()
-    local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+		local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 		local cmp = require("cmp")
 
-    cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+		cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 		require("luasnip.loaders.from_vscode").lazy_load()
+		require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/lua/snippets" })
 		cmp.setup({
 			snippet = {
 				expand = function(args)
