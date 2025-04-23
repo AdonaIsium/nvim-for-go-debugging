@@ -29,8 +29,8 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 
 -- White Space
-vim.opt.list = true
-vim.opt.listchars = { tab = " ", trail = "" }
+-- vim.opt.list = true
+-- vim.opt.listchars = { tab = " ", trail = "" }
 
 -- Incremental Editing Preview
 vim.opt.inccommand = "split"
@@ -39,7 +39,7 @@ vim.opt.inccommand = "split"
 vim.opt.cursorline = true
 
 -- Color Column
-vim.opt.colorcolumn = "80"
+-- vim.opt.colorcolumn = "80"
 
 -- Color Column for git commits
 vim.cmd("autocmd FileType gitcommit set colorcolumn=50,72")
