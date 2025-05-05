@@ -59,7 +59,9 @@ return {
 
 				-- Keybindings
 				local nmap = function(keys, func, desc)
-					if desc then desc = "LSP: " .. desc end
+					if desc then
+						desc = "LSP: " .. desc
+					end
 					vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
 				end
 
@@ -117,6 +119,9 @@ return {
 								staticcheck = true,
 							},
 						}
+						opts.on_init = function(client)
+							client.server_capabilities.documentFormattingProvider = true
+						end
 					end
 
 					lspconfig[server_name].setup(opts)
@@ -139,4 +144,3 @@ return {
 		end,
 	},
 }
-
