@@ -40,6 +40,7 @@ return {
 						end,
 					})
 				elseif client.name == "null-ls" then
+					client.server_capabilities.definitionProvider = false -- prevent go-to-definition from being duplicated
 					vim.api.nvim_create_autocmd("BufWritePre", {
 						buffer = bufnr,
 						callback = function()
