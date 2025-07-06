@@ -8,8 +8,9 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
+				ensure_installed = { "gopls", "pyright" },
 				automatic_installation = true,
-				automatic_enable = false,
+				automatic_enable = true,
 			})
 		end,
 	},
@@ -18,9 +19,10 @@ return {
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			local lspconfig = require("lspconfig")
-			local mason_lspconfig = require("mason-lspconfig")
+			local util = require("lspconfig.util")
 
 			local on_attach = function(client, bufnr)
+				-- Go: organize imports and format
 				if vim.bo[bufnr].filetype == "go" then
 					vim.api.nvim_create_autocmd("BufWritePre", {
 						buffer = bufnr,
@@ -41,7 +43,7 @@ return {
 						end,
 					})
 				elseif client.name == "null-ls" then
-					client.server_capabilities.definitionProvider = false -- prevent go-to-definition from being duplicated
+					-- Null-ls formatting (e.g., stylua)
 					vim.api.nvim_create_autocmd("BufWritePre", {
 						buffer = bufnr,
 						callback = function()
@@ -55,6 +57,7 @@ return {
 					})
 				end
 
+				-- LSP keymaps
 				local nmap = function(keys, func, desc)
 					if desc then
 						desc = "LSP: " .. desc
@@ -76,6 +79,7 @@ return {
 				nmap("<leader>e", vim.diagnostic.open_float, "Line Diagnostics")
 				nmap("<leader>q", vim.diagnostic.setloclist, "Diagnostic List")
 
+				-- Format and Save
 				vim.keymap.set("n", "<C-s>", function()
 					vim.lsp.buf.format({
 						async = false,
@@ -88,6 +92,7 @@ return {
 
 				vim.keymap.set("i", "<C-s>", "<Esc><C-s>", { buffer = bufnr })
 
+				-- Format without save
 				vim.keymap.set("n", "<C-f>", function()
 					vim.lsp.buf.format({
 						async = true,
@@ -98,29 +103,35 @@ return {
 				end, { buffer = bufnr, desc = "Format File (stylua)" })
 			end
 
-			for _, server_name in ipairs(mason_lspconfig.get_installed_servers()) do
-				local opts = {
-					on_attach = on_attach,
-					capabilities = capabilities,
-				}
-
-				if server_name == "gopls" then
-					opts.settings = {
-						gopls = {
-							analyses = {
-								unusedparams = true,
-								unusedwrite = true,
-							},
-							staticcheck = true,
+			-- gopls config
+			lspconfig.gopls.setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+				settings = {
+					gopls = {
+						analyses = {
+							unusedparams = true,
+							unusedwrite = true,
 						},
-					}
-					opts.on_init = function(client)
-						client.server_capabilities.documentFormattingProvider = true
-					end
-				end
+						staticcheck = true,
+					},
+				},
+			})
 
-				lspconfig[server_name].setup(opts)
-			end
+			-- pyright config with virtualenv detection
+			lspconfig.pyright.setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+				before_init = function(_, config)
+					local root_dir = util.find_git_ancestor(vim.fn.getcwd()) or vim.fn.getcwd()
+					local python_path = root_dir .. "/.venv/bin/python"
+					if vim.fn.executable(python_path) == 1 then
+						config.settings = config.settings or {}
+						config.settings.python = config.settings.python or {}
+						config.settings.python.pythonPath = python_path
+					end
+				end,
+			})
 		end,
 	},
 	{
