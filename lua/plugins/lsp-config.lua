@@ -1,5 +1,4 @@
 return {
-	-- 1) Mason core
 	{
 		"williamboman/mason.nvim",
 		build = ":MasonUpdate",
@@ -8,20 +7,16 @@ return {
 		end,
 	},
 
-	-- 2) Mason-LSPconfig integration (v2.0+)
 	{
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
 				ensure_installed = { "gopls", "pyright" },
-				-- turn off Mason’s auto-enable so we only start each server once,
-				-- and do it manually below:
 				automatic_enable = false,
 			})
 		end,
 	},
 
-	-- 3) nvim-lspconfig itself
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -34,16 +29,13 @@ return {
 			local util = require("lspconfig.util")
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			-- shared on_attach: organize imports+format for Go, stylua for others, plus keymaps
+			-- shared on_attach: Go gets organize-imports + format on save; generic format keymaps prefer "whoever can format"
 			local on_attach = function(client, bufnr)
 				local function buf_map(mode, lhs, rhs, desc)
-					if desc then
-						desc = "LSP: " .. desc
-					end
-					vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
+					vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc and ("LSP: " .. desc) or nil })
 				end
 
-				-- Go-specific: organize imports & format on save
+				-- Go: organize imports + format on save via gopls
 				if vim.bo[bufnr].filetype == "go" then
 					vim.api.nvim_create_autocmd("BufWritePre", {
 						buffer = bufnr,
@@ -60,12 +52,11 @@ return {
 									end
 								end
 							end
-							vim.lsp.buf.format({ async = false })
+							vim.lsp.buf.format({ async = false }) -- gopls will handle Go
 						end,
 					})
 				end
 
-				-- null-ls formatting for non-Go
 				if client.name == "null-ls" then
 					vim.api.nvim_create_autocmd("BufWritePre", {
 						buffer = bufnr,
@@ -95,20 +86,18 @@ return {
 				buf_map("n", "<leader>e", vim.diagnostic.open_float, "Line Diagnostics")
 				buf_map("n", "<leader>q", vim.diagnostic.setloclist, "Diagnostic List")
 
-				-- Format & save
+				-- Option A: Use *whoever* can format (gopls for Go; null-ls or LSP for others)
 				vim.keymap.set("n", "<C-s>", function()
-					vim.lsp.buf.format({
-						async = false,
-						filter = function(c)
-							return c.name == "null-ls"
-						end,
-					})
+					vim.lsp.buf.format({ async = false })
 					vim.cmd("w")
 				end, { buffer = bufnr, desc = "Format & Save" })
 				vim.keymap.set("i", "<C-s>", "<Esc><C-s>", { buffer = bufnr })
+				vim.keymap.set("n", "<C-f>", function()
+					vim.lsp.buf.format({ async = true })
+				end, { buffer = bufnr, desc = "Format File" })
 			end
 
-			-- Manually start gopls (only once!)
+			-- gopls
 			lspconfig.gopls.setup({
 				on_attach = on_attach,
 				capabilities = capabilities,
@@ -121,12 +110,11 @@ return {
 				},
 			})
 
-			-- Manually start pyright
+			-- pyright
 			lspconfig.pyright.setup({
 				on_attach = on_attach,
 				capabilities = capabilities,
 				before_init = function(_, config)
-					-- use .venv if present
 					local root = util.find_git_ancestor(vim.fn.getcwd()) or vim.fn.getcwd()
 					local pybin = root .. "/.venv/bin/python"
 					if vim.fn.executable(pybin) == 1 then
@@ -135,20 +123,6 @@ return {
 						config.settings.python.pythonPath = pybin
 					end
 				end,
-			})
-		end,
-	},
-
-	-- 4) null-ls for formatting
-	{
-		"nvimtools/none-ls.nvim",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		config = function()
-			local null_ls = require("null-ls")
-			null_ls.setup({
-				sources = {
-					null_ls.builtins.formatting.stylua,
-				},
 			})
 		end,
 	},
