@@ -18,8 +18,34 @@ return {
 						args = { "-count=1", "-timeout=60s" },
 					}),
 					require("neotest-rust")({
-						args = { "--nocapture" }, -- show test output inline
+						args = { "--nocapture" },
 					}),
+				},
+				icons = {
+					running = "⏱",
+					passed = "✅",
+					failed = "❌",
+					skipped = "⚠️",
+					unknown = "❓",
+				},
+				highlights = {
+					passed = "NeotestPassed",
+					failed = "NeotestFailed",
+					running = "NeotestRunning",
+					skipped = "NeotestSkipped",
+					unknown = "NeotestUnknown",
+				},
+				output = {
+					enabled = true,
+					open_on_run = "short", -- opens quick output for failing tests
+				},
+				summary = {
+					enabled = true,
+					follow = true, -- keep summary focused on running test
+				},
+				quickfix = {
+					enabled = true,
+					open = false, -- don’t auto-open quickfix unless you want it
 				},
 			})
 
@@ -42,12 +68,12 @@ return {
 				neotest.run.run("./...")
 			end, { desc = "Test: Run project" })
 
-			-- Debug nearest test (Go + Rust both supported)
+			-- Debug nearest test
 			vim.keymap.set("n", "<leader>gd", function()
 				neotest.run.run({ strategy = "dap" })
 			end, { desc = "Test: Debug nearest" })
 
-			-- Open test output (floating window)
+			-- Open output (floating window)
 			vim.keymap.set("n", "<leader>go", function()
 				neotest.output.open({ enter = true })
 			end, { desc = "Test: Open output" })
@@ -56,6 +82,15 @@ return {
 			vim.keymap.set("n", "<leader>gs", function()
 				neotest.summary.toggle()
 			end, { desc = "Test: Toggle summary" })
+
+			-- Jump between test results
+			vim.keymap.set("n", "[t", function()
+				neotest.jump.prev({ status = "failed" })
+			end, { desc = "Test: Jump to previous failed" })
+
+			vim.keymap.set("n", "]t", function()
+				neotest.jump.next({ status = "failed" })
+			end, { desc = "Test: Jump to next failed" })
 		end,
 	},
 }
