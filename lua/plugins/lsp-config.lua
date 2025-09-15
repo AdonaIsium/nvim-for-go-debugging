@@ -11,7 +11,7 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "gopls", "pyright" },
+				ensure_installed = { "gopls", "pyright", "rust_analyzer" },
 				automatic_enable = false,
 			})
 		end,
@@ -29,13 +29,13 @@ return {
 			local util = require("lspconfig.util")
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			-- shared on_attach: Go gets organize-imports + format on save; generic format keymaps prefer "whoever can format"
+			-- shared on_attach
 			local on_attach = function(client, bufnr)
 				local function buf_map(mode, lhs, rhs, desc)
 					vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc and ("LSP: " .. desc) or nil })
 				end
 
-				-- Go: organize imports + format on save via gopls
+				-- Go organize imports + format on save
 				if vim.bo[bufnr].filetype == "go" then
 					vim.api.nvim_create_autocmd("BufWritePre", {
 						buffer = bufnr,
@@ -52,11 +52,12 @@ return {
 									end
 								end
 							end
-							vim.lsp.buf.format({ async = false }) -- gopls will handle Go
+							vim.lsp.buf.format({ async = false })
 						end,
 					})
 				end
 
+				-- null-ls format on save
 				if client.name == "null-ls" then
 					vim.api.nvim_create_autocmd("BufWritePre", {
 						buffer = bufnr,
@@ -86,7 +87,7 @@ return {
 				buf_map("n", "<leader>e", vim.diagnostic.open_float, "Line Diagnostics")
 				buf_map("n", "<leader>q", vim.diagnostic.setloclist, "Diagnostic List")
 
-				-- Option A: Use *whoever* can format (gopls for Go; null-ls or LSP for others)
+				-- Format + save
 				vim.keymap.set("n", "<C-s>", function()
 					vim.lsp.buf.format({ async = false })
 					vim.cmd("w")
