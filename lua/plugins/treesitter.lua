@@ -1,4 +1,15 @@
 return {
+	-- fast, treesitter-aware replacement for matchparen
+	{
+		"andymass/vim-matchup",
+		event = "VeryLazy",
+		config = function()
+			-- show matching offscreen parens in a popup instead of jumping
+			vim.g.matchup_matchparen_offscreen = { method = "popup" }
+		end,
+	},
+
+	-- main treesitter plugin
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
@@ -32,7 +43,13 @@ return {
 						node_decremental = "grm",
 					},
 				},
-				autotag = { enable = true }, -- if you’ve installed nvim-ts-autotag
+				autotag = { enable = true },
+
+				-- 👇 enable vim-matchup integration
+				matchup = {
+					enable = true,
+					disable_virtual_text = true,
+				},
 			})
 		end,
 	},
